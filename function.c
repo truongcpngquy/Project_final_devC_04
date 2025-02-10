@@ -3,7 +3,7 @@
 #include <string.h>
 #include "function.h"
 
-User users[100];
+struct User users[100];
 int userCount = 0;
 
 void mainMenu() {
@@ -93,10 +93,18 @@ void addUser() {
     scanf("%s", newUser.id);
     printf("Enter the name: ");
     scanf("%s", newUser.name);
-    printf("Enter the phone: ");
-    scanf("%s", newUser.phone);
     printf("Enter the email: ");
     scanf("%s", newUser.email);
+    printf("Enter the phone: ");
+    scanf("%s", newUser.phone);
+//   printf("Enter the gender")
+    printf("Enter the day of birth");
+    printf("Enter the day: ");
+    scanf("%d",Date.day);
+    printf("Enter the month: ");
+    scanf("%d",Date.month);
+    printf("Enter the year: ");
+	scanf("%d",Date.year); 
     printf("Enter the username: ");
     scanf("%s", newUser.username);
     strcpy(newUser.password, newUser.phone);
@@ -105,4 +113,3 @@ void addUser() {
     users[userCount++] = newUser;
     printf("User added successfully.\n");
 }
-

@@ -1,37 +1,40 @@
 #ifndef DATATYPE_H
 #define DATATYPE_H
 #include <stdbool.h>
-typedef struct {
-    int day,month,year;
-} Date;
 
-typedef struct {
-	char transferId[10];
-	char receivingId[10];
-	double amount;
-	char type[10]; // deposit // transfer // withdraw
-	char message[50];
-//	struct Date transactionDate; 
-} Transaction; 
+struct Date{
+    int day, month, year;
+};
 
-typedef struct {
-    char userId[20];
+struct Transaction{
+    char transferId[20];
+    char receivingId[20];
+    double amount;
+    char type[20]; // deposit // transfer // withdraw
+    char message[50];
+    struct Date transactionDate;
+};
+
+struct AccountInfo{
+    char userId[30];
     float balance;
     bool status;
-    char userName[10];
-	char password[10];
-//	struct Transaction transactionHistory[]; 
-} AccountInfo;
+    char userName[20];
+    char password[20];
+    struct Transaction transactionHistory[100]; 
+};
 
-typedef struct {
-    char id[10];
-    char name[20];
-//    struct DateOfBirth; 
-    bool gender;
-    char email[20];
-    char phone[10];
-    
-} User;
-
+struct User{
+    char id[20];
+    char name[30];
+    struct Date dateOfBirth;
+    int gender; 
+    char email[30];
+    char phone[30];
+    char username[20];
+    char password[20];
+    char status[20];
+    float balance;
+};
 
 #endif

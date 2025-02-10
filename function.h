@@ -3,10 +3,10 @@
 
 #include "datatype.h"
 
-void mainMENU();
+void mainMenu(); 
 void end();
 void displayUserMenu();
-void displayUsers();
+void showUserList(); 
 void addUser();
 
 #endif

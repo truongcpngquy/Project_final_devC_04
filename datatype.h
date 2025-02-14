@@ -1,3 +1,4 @@
+// noi khai bao struct 
 #ifndef DATATYPE_H
 #define DATATYPE_H
 #include <stdbool.h>

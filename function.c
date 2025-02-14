@@ -11,7 +11,7 @@ int userCount=0;
 
 void mainMenu() {			
     int choice;
-    do {
+    while(1) {
         printf("***Bank Management System Using C***\n\n");
         printf("%8s%17s\n"," ","CHOOSE YOUR ROLE");
         printf("%5s%24s\n"," ","========================");
@@ -24,25 +24,29 @@ void mainMenu() {
         getchar();
 
         switch (choice) {
-            case 1:
+            case 1:{
+            	system("cls");
                 displayUserMenu();
                 break;
-            case 2:
+            }
+            case 2:{
                 printf("This functionality is under development!\n");
                 break;
-            case 3:
+            }
+            case 3:{	
                 end();
                 break;
             default:
                 printf("Lua chon khong hop le! Vui long chon lai\n");
+            }
         }
-    } while (choice != 3);
+    } 
 }
 
 void displayUserMenu() {	
     int choice;
-    do {
-    	system("cls"); 
+    while(1) {
+    	
         printf("***Student Management System Using C***\n\n");
         printf("%16s%4s\n", " ", "Menu");
         printf("%9s%24s\n", " ", "========================");
@@ -50,8 +54,8 @@ void displayUserMenu() {
         printf("%8s%19s\n", " ", "[2] Show All user.");
         printf("%8s%25s\n", " ", "[3] Search user by name.");
         printf("%8s%25s\n", " ", "[4] Show detail an user.");
-        printf("%8s%14s\n", " ", "[5] About us.");
-        printf("%8s%25s\n", " ", "[6] Search user by name.");
+        printf("%8s%22s\n", " ", "[5] Lock/Unlock user.");
+        printf("%8s%23s\n", " ", "[6] Sort user by name.");
         printf("%8s%10s\n", " ", "[0] Exit.");
         printf("%9s%24s\n", " ", "========================");
         printf("%8s%20s", " ", "Enter your choice: ");
@@ -94,9 +98,14 @@ void displayUserMenu() {
 				sortUsersByName();
 				goBackOrExit();
 				break;
+			}
+			case 0:{
+				system("cls");
+				mainMenu();
+				break;
 			} 
         }
-    } while (choice != 0);
+    } 
 }
 
 void addUser() {
@@ -104,6 +113,7 @@ void addUser() {
         printf("Cannot add more users.\n");
         return;
     }
+
      struct User newUser;
     
     printf("Enter the ID: ");
@@ -131,12 +141,13 @@ void addUser() {
     strcpy(newUser.status, "open");
 
     users[userCount++] = newUser;
-    printf("\nUser added successfully.\n");\
+    printf("\nUser added successfully.\n");
     
 }
 
 void showUserList() {		  
     printf("\n");
+    printf("***User List****\n");
     printf("+======================|======================|===========================|===============|===========+\n");
     printf("| %-20s | %-20s | %-25s | %-11s   | %-8s  |\n", "ID", "Name", "Email", "Phone", "Status");
     printf("+======================|======================|===========================|===============|===========+\n");
@@ -177,21 +188,26 @@ void showDetailUser(){
     printf("\nEnter user ID : ");
     scanf("%s", searchId);
 
-    int found = 0;
-    int i = 0;
-    for (i; i < userCount; i++) {
+     int found = 0;
+    int i;
+    
+    for (i = 0; i < userCount; i++) {
         if (strcmp(users[i].id, searchId) == 0) {
             found = 1;
             
-            printf("ID:            %s \n", users[i].id);
-            printf("Name:          %s \n", users[i].name);
-            printf("Date of Birth: %02d-%02d-%04d                   \n", users[i].dateOfBirth.day, users[i].dateOfBirth.month, users[i].dateOfBirth.year);
-            printf("Gender:        %s \n", users[i].gender ? "Male" : "Female");
-            printf("Email:         %s \n", users[i].email);
-            printf("Phone:         %s \n", users[i].phone);
-            printf("Username:      %s \n", users[i].username);
-            printf("Balance:       %f \n", users[i].balance);
-            printf("Status:        %s \n", users[i].status);
+            printf("+==========================================+\n");
+            printf("| %-14s | %-23s |\n", "Field", "Value");
+            printf("|==========================================|\n");
+            printf("| %-14s | %-23s |\n", "ID", users[i].id);
+            printf("| %-14s | %-23s |\n", "Name", users[i].name);
+            printf("| %-14s | %02d-%02d-%04d              |\n", "Date of Birth", users[i].dateOfBirth.day, users[i].dateOfBirth.month, users[i].dateOfBirth.year);
+            printf("| %-14s | %-23s |\n", "Gender", users[i].gender ? "Male" : "Female");
+            printf("| %-14s | %-23s |\n", "Email", users[i].email);
+            printf("| %-14s | %-23s |\n", "Phone", users[i].phone);
+            printf("| %-14s | %-23s |\n", "Username", users[i].username);
+            printf("| %-14s | %-23.2f |\n", "Balance", users[i].balance);
+            printf("| %-14s | %-23s |\n", "Status", users[i].status);
+            printf("+==========================================+\n");
             
             break;
         }
@@ -200,9 +216,8 @@ void showDetailUser(){
     if (!found) {
         printf("User with ID '%s' not found.\n", searchId);
     }
-
-    
 }
+
 
 void end() {		 
     printf("========= Thank You =========\n");
@@ -230,7 +245,7 @@ void toggleUserLockStatusByID() {
 
             // Get the action from the user
              while(1){
-                printf("Enter action (1 to lock, 0 to unlock): ");
+                printf("Enter action : ");
                 scanf("%d", &action);
                 if(action == 0 || action == 1) break;
                 else printf("Invalid action. Please enter 0 or 1.\n");
@@ -250,19 +265,19 @@ void toggleUserLockStatusByID() {
     if (!found) {
         printf("User with ID '%s' not found.\n", searchId);
     }
-}
+} 
 
 void sortUsersByName() {
-    int i, j;
+    int i=0, j=0;
     struct User temp;
     int order;
 
     // Hoi nguoi dung muon sap xep theo thu tu nao
-    printf("Enter sorting order (1 for ascending, 0 for descending): ");
+    printf("Enter sorting order : ");
     scanf("%d", &order);
 
     for (i = 0; i < userCount - 1; i++) {
-        for (j = 0; j < userCount - i - 1; j++) {
+        for (j ; j < userCount - i - 1; j++) {
             if (order == 1) {
                 // Sap xep tang dan
                 if (strcmp(users[j].name, users[j + 1].name) > 0) {
@@ -294,9 +309,11 @@ void goBackOrExit(){
         scanf(" %c", &choice);
 
         if (choice == 'b') {
+        	system("cls");
             displayUserMenu();
             return;
         } else if (choice == '0') {
+        	system("cls");
             mainMenu();
             return;
         } else {
@@ -304,3 +321,52 @@ void goBackOrExit(){
         }
     }
 } 
+
+
+
+
+bool isDuplicateUser(struct User users[], int userCount, struct User newUser, char *conflictField) {
+    for (int i = 0; i < userCount; i++) {
+        if (strcmp(users[i].id, newUser.id) == 0) {
+            strcpy(conflictField, "ID");
+            return true;
+        }
+        if (strcmp(users[i].phone, newUser.phone) == 0) {
+            strcpy(conflictField, "So Dien Thoai");
+            return true;
+        }
+        if (strcmp(users[i].username, newUser.username) == 0) {
+            strcpy(conflictField, "Username");
+            return true;
+        }
+        if (strcmp(users[i].email, newUser.email) == 0) {
+            strcpy(conflictField, "Email");
+            return true;
+        }
+    }
+    return false;
+}
+
+void getValidUserInput(struct User users[], int userCount, struct User *newUser) {
+    char conflictField[30];
+
+    do {
+        printf("Enter the ID: ");
+        scanf("%s", newUser->id);
+    } while (isDuplicateUser(users, userCount, *newUser, conflictField) && strcmp(conflictField, "ID") == 0);
+
+    do {
+        printf("Nhap So Dien Thoai: ");
+        scanf("%s", newUser->phone);
+    } while (isDuplicateUser(users, userCount, *newUser, conflictField) && strcmp(conflictField, "So Dien Thoai") == 0);
+
+    do {
+        printf("Nhap Username: ");
+        scanf("%s", newUser->username);
+    } while (isDuplicateUser(users, userCount, *newUser, conflictField) && strcmp(conflictField, "Username") == 0);
+
+    do {
+        printf("Nhap Email: ");
+        scanf("%s", newUser->email);
+    } while (isDuplicateUser(users, userCount, *newUser, conflictField) && strcmp(conflictField, "Email") == 0);
+}

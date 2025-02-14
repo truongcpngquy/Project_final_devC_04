@@ -7,26 +7,29 @@
 // ham menu chinh
 void mainMenu();
 
-// ham ket thuc chuong trinh
-void end();
-
 // ham menu quan ly nguoi dung
 void displayUserMenu();
-
-// ham in danh sach nguoi dung 
-void showUserList(); 
 
 // ham nhap thong tin nguoi dung 
 void addUser();
 
+// ham in danh sach nguoi dung 
+void showUserList(); 
+
+void searchUserByName();
+
 // ham hien thong tin chi tiet 
 void showDetailUser();
 
-void searchUser();
-
+// khoa(mo khoa) nguoi dung 
 void toggleUserLockStatusByID();
 
+// sap xep nguoi dung 
 void sortUsersByName();
+
+// ham ket thuc chuong trinh
+void end();
+
 
 void goBackOrExit();
 		        				  

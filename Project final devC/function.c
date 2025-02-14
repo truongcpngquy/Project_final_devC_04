@@ -30,6 +30,7 @@ void mainMenu() {
                 break;
             }
             case 2:{
+             
                 printf("This functionality is under development!\n");
                 break;
             }
@@ -42,6 +43,7 @@ void mainMenu() {
         }
     } 
 }
+
 
 void saveUsersToFile() {
     FILE *file = fopen("users.bin", "wb");
@@ -66,6 +68,7 @@ void loadUsersFromFile() {
     fclose(file);
     
 }
+
 
 
 void displayUserMenu() {	
@@ -145,7 +148,8 @@ void addUser() {
         printf("Enter the ID: ");
         scanf("%s", newUser.id);
         while(getchar() != '\n'); 
-
+		if(strlen(newUser.id) !=10 )
+		printf("Error: ID can not be less than 10 character");
         if (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "ID") == 0) {
             printf("Id %s already exists!\n\n", newUser.id);
         }
@@ -274,12 +278,10 @@ void end() {
 
 void toggleUserLockStatusByID() {
     char searchId[20];
-    int action;
 
     printf("\nEnter user ID: ");
     scanf("%s", searchId);
 
-    // Find the user
     int found = 0;
     int i=0; 
     for (i ; i < userCount; i++) {
@@ -290,28 +292,38 @@ void toggleUserLockStatusByID() {
             printf("Current status: %s\n", users[i].status);
 
             
-             while(1){
-                printf("Enter action : ");
-                scanf("%d", &action);
-                if(action == 0 || action == 1) break;
-                else printf("Invalid action. Please enter 0 or 1.\n");
+            if (strcmp(users[i].status, "open") == 0) {
+                printf("Do you want to lock this user? (1 = Yes, 0 = No): ");
+                int choice;
+                scanf("%d", &choice);
+                if (choice == 1) {
+                    strcpy(users[i].status, "Locked");
+                    printf("User with ID '%s' has been locked.\n", searchId);
+                } else {
+                    printf("Action canceled.\n");
+                }
+            } else if (strcmp(users[i].status, "Locked") == 0) {
+                printf("Do you want to unlock this user? (1 = Yes, 0 = No): ");
+                int choice;
+                scanf("%d", &choice);
+                if (choice == 1) {
+                    strcpy(users[i].status, "open");
+                    printf("User with ID '%s' has been unlocked.\n", searchId);
+                } else {
+                    printf("Action canceled.\n");
+                }
             }
 
-            if (action == 1) {
-                strcpy(users[i].status, "Locked");
-                printf("User with ID '%s' has been locked.\n", searchId);
-            } else if (action == 0) {
-                strcpy(users[i].status, "open");  
-                printf("User with ID '%s' has been unlocked.\n", searchId);
-            } 
-            break; 
+            
+            saveUsersToFile();
+            return;
         }
     }
 
     if (!found) {
         printf("User with ID '%s' not found.\n", searchId);
     }
-} 
+}
 
 void sortUsersByName() {
     int i=0, j=0;

@@ -37,5 +37,6 @@ bool isDuplicateUser();
 
 void saveUsersToFile();
 
-void loadUsersFromFile(); 
+void loadUsersFromFile();
+
 #endif        

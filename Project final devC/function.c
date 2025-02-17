@@ -30,7 +30,6 @@ void mainMenu() {
                 break;
             }
             case 2:{
-             
                 printf("This functionality is under development!\n");
                 break;
             }
@@ -302,7 +301,7 @@ void toggleUserLockStatusByID() {
                 } else {
                     printf("Action canceled.\n");
                 }
-            } else if (strcmp(users[i].status, "Locked") == 0) {
+           		} else if (strcmp(users[i].status, "Locked") == 0) {
                 printf("Do you want to unlock this user? (1 = Yes, 0 = No): ");
                 int choice;
                 scanf("%d", &choice);
@@ -403,6 +402,16 @@ bool isDuplicateUser(struct User users[], int userCount, struct User newUser, ch
     return false;
 }
 
-
-
+//void clearUserFile() {
+//    FILE *file = fopen("users.bin", "wb");
+//    if (file == NULL) {
+//        printf("Error opening file!\n");
+//        return;
+//    }
+//    fclose(file);
+//    printf("User data has been deleted!\n");
+//
+//   
+//    userCount = 0;
+//}
 

@@ -39,4 +39,7 @@ void saveUsersToFile();
 
 void loadUsersFromFile();
 
+void clearUserFile();
+
+
 #endif        

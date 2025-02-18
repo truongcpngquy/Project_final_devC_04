@@ -30,16 +30,15 @@ void sortUsersByName();
 // ham ket thuc chuong trinh
 void end();
 
-
 void goBackOrExit();
-		    
+//ham kiem tra trung lap
 bool isDuplicateUser();
-
+// ham luu thong tin nguoi dung
 void saveUsersToFile();
-
+// ham doc file
 void loadUsersFromFile();
 
 void clearUserFile();
 
-
+void loginAdmin(char *email,char *passWord);
 #endif        

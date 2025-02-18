@@ -8,6 +8,5 @@ int main(int argc, char *argv[]) {
 //	clearUserFile();
 	loadUsersFromFile();
 	mainMenu();
-	saveUsersToFile();
 	return 0;
 }

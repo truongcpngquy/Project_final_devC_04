@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "function.h"
-#include"datatype.h"
+#include  "datatype.h"
 #define MAX 100 
  
 struct User users[MAX]; 
@@ -26,10 +26,11 @@ void mainMenu() {
         switch (choice) {
             case 1:{
             	system("cls");
-                displayUserMenu();
+            	displayUserMenu();
                 break;
             }
             case 2:{
+            	void clearUserFile();
                 printf("This functionality is under development!\n");
                 break;
             }
@@ -37,7 +38,7 @@ void mainMenu() {
                 end();
                 break;
             default:
-                printf("Lua chon khong hop le! Vui long chon lai\n");
+                printf("Invalid choice! Please choose again.\n");
             }
         }
     } 
@@ -135,39 +136,63 @@ void displayUserMenu() {
     } 
 }
 
+
 void addUser() {
     if (userCount >= MAX) {
         printf("Cannot add more users.\n");
         return;
     }
 
-     struct User newUser;
+    struct User newUser;
     char conflictField[30];
+    //nhap ID
     do {
+    	nhaplai:
         printf("Enter the ID: ");
         scanf("%s", newUser.id);
         while(getchar() != '\n'); 
-		if(strlen(newUser.id) !=10 )
-		printf("Error: ID can not be less than 10 character");
-        if (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "ID") == 0) {
-            printf("Id %s already exists!\n\n", newUser.id);
+		if(strlen(newUser.id) !=10 ){
+            printf("Error: ID can not be less than 10 character!\n");
+            goto nhaplai;
+        }else{
+            if (isDuplicateUser(users, userCount, newUser, conflictField)){
+                if(strcmp(conflictField, "ID") == 0){
+                    printf("Id %s already exists!\n\n", newUser.id);
+                }
+            }    
         }
-
-    } while (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "ID") == 0);
-    printf("Enter the name: ");
-    scanf("%s", newUser.name);
+	} while (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "ID") == 0);
+	printf("Enter the name: ");
+	gets(newUser.name);
+    //nhap email
     do{
-    printf("Enter the email: ");
-    scanf("%s", newUser.email);
-    if(isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "Email") == 0)
-	printf("Email. %s already exists!\n",newUser.email);
+        printf("Enter the email: ");
+        scanf("%s", newUser.email);
+        if(isDuplicateUser(users, userCount, newUser, conflictField)  ){
+            if(strcmp(conflictField, "Email") == 0){
+                printf("Email. %s already exists!\n",newUser.email);
+            }
+        }
     } while (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "Email") == 0);
-    do{
-    printf("Enter the phone: ");
-    scanf("%s", newUser.phone);
-    if(isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "Phone") == 0)
-	printf("Phone %s already exists!\n",newUser.phone);
-    } while (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "Phone") == 0);
+    //nhap sdt
+      do {
+    	nhaplai1:
+        printf("Enter the Phone: ");
+        scanf("%s", newUser.phone);
+        while(getchar() != '\n'); 
+		if(strlen(newUser.phone) !=10 ){
+            printf("Error: Phone number can not be less than 10 character!\n");
+            goto nhaplai1;
+        }else{
+            if (isDuplicateUser(users, userCount, newUser, conflictField)){
+                if(strcmp(conflictField, "Phone") == 0){
+                    printf("phone number %s already exists!\n\n", newUser.phone);
+                }
+            }    
+        }
+	} while (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "Phone") == 0);
+
+    //nhap birthday
     printf("Enter the gender(Male: 1/Female: 0): ");
     scanf("%d",&newUser.gender);
     printf("Enter the day of birth\n");
@@ -177,12 +202,19 @@ void addUser() {
     scanf("%d", &newUser.dateOfBirth.month);
     printf("%2s%17s"," ","Enter the year: ");
     scanf("%d", &newUser.dateOfBirth.year);
+
+    //nhap username
     do{
-    printf("Enter the username: ");
-    scanf("%s", newUser.username);
-    if(isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "Username") == 0)
-	printf("User %s already exists!\n",newUser.username);
+        printf("Enter the username: ");
+        scanf("%s", newUser.username);
+        if(isDuplicateUser(users, userCount, newUser, conflictField)){
+            if(strcmp(conflictField, "Username") == 0){
+                printf("User %s already exists!\n",newUser.username);
+            }
+        }
     } while (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "Username") == 0);
+
+
     printf("Enter the balance: ");
 	scanf("%f",&newUser.balance); 
     strcpy(newUser.password, newUser.phone);
@@ -201,7 +233,7 @@ void showUserList() {
     printf("| %-20s | %-20s | %-25s | %-11s   | %-8s  |\n", "ID", "Name", "Email", "Phone", "Status");
     printf("+======================|======================|===========================|===============|===========+\n");
 	int i=0; 
-    for (i; i < userCount; i++) {
+    for (i ; i < userCount; i++) {
         printf("| %-20s | %-20s | %-25s |  %-11s  |  %-8s |\n",users[i].id, users[i].name, users[i].email, users[i].phone, users[i].status);
         printf("+----------------------|----------------------|---------------------------|---------------|-----------+\n");
 	}	
@@ -210,7 +242,7 @@ void showUserList() {
 void searchUserByName() {
     char searchName[50];
     printf("\nEnter user name : ");
-    scanf("%49s", searchName);
+    gets(searchName);
 
     int found = 0;
     printf("\nSearch Results:\n");
@@ -286,14 +318,11 @@ void toggleUserLockStatusByID() {
     for (i ; i < userCount; i++) {
         if (strcmp(users[i].id, searchId) == 0) {
             found = 1;
-
-            
             printf("Current status: %s\n", users[i].status);
 
-            
+            int choice;
             if (strcmp(users[i].status, "open") == 0) {
                 printf("Do you want to lock this user? (1 = Yes, 0 = No): ");
-                int choice;
                 scanf("%d", &choice);
                 if (choice == 1) {
                     strcpy(users[i].status, "Locked");
@@ -301,9 +330,8 @@ void toggleUserLockStatusByID() {
                 } else {
                     printf("Action canceled.\n");
                 }
-           		} else if (strcmp(users[i].status, "Locked") == 0) {
+            } else if (strcmp(users[i].status, "Locked") == 0) {
                 printf("Do you want to unlock this user? (1 = Yes, 0 = No): ");
-                int choice;
                 scanf("%d", &choice);
                 if (choice == 1) {
                     strcpy(users[i].status, "open");
@@ -319,7 +347,7 @@ void toggleUserLockStatusByID() {
         }
     }
 
-    if (!found) {
+    if (found==0) {
         printf("User with ID '%s' not found.\n", searchId);
     }
 }
@@ -332,10 +360,9 @@ void sortUsersByName() {
     // Hoi nguoi dung muon sap xep theo thu tu nao
     printf("Enter sorting order(Ascending: 1/Descending: 0) : ");
     scanf("%d", &order);
-
-    for (i = 0; i < userCount - 1; i++) {
-        for (j ; j < userCount - i - 1; j++) {
-            if (order == 1) {
+    if (order == 1) {
+        for (i ; i < userCount - 1; i++) {
+            for (j ; j < userCount - i - 1; j++) {
                 // Sap xep tang dan
                 if (strcmp(users[j].name, users[j + 1].name) > 0) {
                     // hoan doi vi tri 
@@ -343,7 +370,11 @@ void sortUsersByName() {
                     users[j] = users[j + 1];
                     users[j + 1] = temp;
                 }
-            } else if (order == 0) {
+            }
+        } 
+    }else if(order ==0){
+        for (i ; i < userCount - 1; i++) {
+            for (j ; j < userCount - i - 1; j++) {
                 // sap xep giam dan 
                 if (strcmp(users[j].name, users[j + 1].name) < 0) {
                     // hoan doi vi tri 
@@ -351,13 +382,15 @@ void sortUsersByName() {
                     users[j] = users[j + 1];
                     users[j + 1] = temp;
                 }
-            } else {
-                printf("Invalid sorting order.\n");
-                return;
             }
         }
+    }else{
+        printf("Invalid sorting order.\n");
+        return;
     }
+    printf("Sorting completed successfully.\n"); 
 }
+
 
 void goBackOrExit(){
 	char choice;
@@ -402,16 +435,17 @@ bool isDuplicateUser(struct User users[], int userCount, struct User newUser, ch
     return false;
 }
 
-//void clearUserFile() {
-//    FILE *file = fopen("users.bin", "wb");
-//    if (file == NULL) {
-//        printf("Error opening file!\n");
-//        return;
-//    }
-//    fclose(file);
-//    printf("User data has been deleted!\n");
-//
-//   
-//    userCount = 0;
-//}
+void clearUserFile() {
+    FILE *file = fopen("users.bin", "wb"); 
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+    fclose(file);
+    printf("User data has been deleted!\n");
+
+    
+    userCount = 0;
+}
+
 

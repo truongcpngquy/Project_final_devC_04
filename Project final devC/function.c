@@ -101,20 +101,21 @@ void isAdmin() {
     if (check_admin(input)) {
         return;
     } else {
-        printf("Incorrect username or password. Try again.\n");
+        printf("Incorrect username or password. Try again.\n"); 
         goto re_enter;
     }
 }
 // ham dang nhap nguoi dung
 
+
 void loginUser() {
     char username[30], password[30];
 	re_enter:
-	printf("***User Login***");
-    printf("Enter Username: ");
+	printf("***User Login***\n");
+    printf("Username: ");
     fgets(username, sizeof(username), stdin);
     username[strcspn(username, "\n")] = 0;
-    printf("Enter Password: ");
+    printf("Password: ");
     fgets(password, sizeof(password), stdin);
     password[strcspn(password, "\n")] = 0;
 	int i=0; 

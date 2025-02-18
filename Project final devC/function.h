@@ -16,6 +16,7 @@ void addUser();
 // ham in danh sach nguoi dung 
 void showUserList(); 
 
+// ham tim kiem nguoi dung bang ten  
 void searchUserByName();
 
 // ham hien thong tin chi tiet 
@@ -30,6 +31,7 @@ void sortUsersByName();
 // ham ket thuc chuong trinh
 void end();
 
+// ham thoat 
 void goBackOrExit();
 
 //ham kiem tra trung lap

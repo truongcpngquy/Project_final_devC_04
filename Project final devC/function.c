@@ -7,6 +7,7 @@
 #define MAX 100 
  
 struct User users[MAX]; 
+struct Admin ad;
 int userCount=0; 
 
 void mainMenu() {			
@@ -26,12 +27,14 @@ void mainMenu() {
         switch (choice) {
             case 1:{
             	system("cls");
+            	isAdmin();
+            	system("cls");
             	displayUserMenu();
                 break;
             }
             case 2:{
-            	void clearUserFile();
-                printf("This functionality is under development!\n");
+            	system("cls");
+            	loginUser();
                 break;
             }
             case 3:{	
@@ -55,7 +58,6 @@ void saveUsersToFile() {
     fwrite(users, sizeof(struct User), userCount, file);
     fclose(file);
 }
-
 // Ham doc danh sach nguoi dung tu file
 void loadUsersFromFile() {
     FILE *file = fopen("users.bin", "rb");
@@ -67,6 +69,63 @@ void loadUsersFromFile() {
     fread(users, sizeof(struct User), MAX, file);
     fclose(file);
     
+}
+
+// ham doc thong tin admin 
+void loadAdminFromFile() {
+    FILE *file = fopen("admin.bin", "rb");
+    if (file == NULL) {
+        printf("Could not open admin file.\n");
+        return;
+    }
+    fread(&ad, sizeof(struct Admin), 1, file);
+    fclose(file);
+}
+// ham kiem tra thong tin 
+int check_admin(struct Admin input) {
+    return strcmp(ad.adminEmail, input.adminEmail) == 0 && strcmp(ad.password, input.password) == 0;
+}
+// ham dang nhap admin 
+void isAdmin() {
+    struct Admin input;
+    loadAdminFromFile();
+	re_enter:
+    printf("*** Admin Login ***\n");
+    printf("Email: ");
+    fgets(input.adminEmail, sizeof(input.adminEmail), stdin);
+    input.adminEmail[strcspn(input.adminEmail, "\n")] = 0;
+    printf("Password: ");
+    fgets(input.password, sizeof(input.password), stdin);
+    input.password[strcspn(input.password, "\n")] = 0;
+
+    if (check_admin(input)) {
+        return;
+    } else {
+        printf("Incorrect username or password. Try again.\n");
+        goto re_enter;
+    }
+}
+// ham dang nhap nguoi dung
+
+void loginUser() {
+    char username[30], password[30];
+	re_enter:
+	printf("***User Login***");
+    printf("Enter Username: ");
+    fgets(username, sizeof(username), stdin);
+    username[strcspn(username, "\n")] = 0;
+    printf("Enter Password: ");
+    fgets(password, sizeof(password), stdin);
+    password[strcspn(password, "\n")] = 0;
+	int i=0; 
+    for (i ; i < userCount; i++) {
+        if (strcmp(users[i].username, username) == 0 && strcmp(users[i].password, password) == 0) {
+			printf("Login successful! Welcome, %s.\n", users[i].name);
+			}
+            return;
+        }
+    printf("Incorrect Username or Password. Try again.\n");
+   goto re_enter;
 }
 
 
@@ -147,13 +206,13 @@ void addUser() {
     char conflictField[30];
     //nhap ID
     do {
-    	nhaplai:
+    	re_enter:
         printf("Enter the ID: ");
         scanf("%s", newUser.id);
         while(getchar() != '\n'); 
 		if(strlen(newUser.id) !=10 ){
             printf("Error: ID can not be less than 10 character!\n");
-            goto nhaplai;
+            goto re_enter;
         }else{
             if (isDuplicateUser(users, userCount, newUser, conflictField)){
                 if(strcmp(conflictField, "ID") == 0){
@@ -176,13 +235,13 @@ void addUser() {
     } while (isDuplicateUser(users, userCount, newUser, conflictField) && strcmp(conflictField, "Email") == 0);
     //nhap sdt
       do {
-    	nhaplai1:
+    	re_enter1:
         printf("Enter the Phone: ");
         scanf("%s", newUser.phone);
         while(getchar() != '\n'); 
 		if(strlen(newUser.phone) !=10 ){
             printf("Error: Phone number can not be less than 10 character!\n");
-            goto nhaplai1;
+            goto re_enter1;
         }else{
             if (isDuplicateUser(users, userCount, newUser, conflictField)){
                 if(strcmp(conflictField, "Phone") == 0){
@@ -433,19 +492,6 @@ bool isDuplicateUser(struct User users[], int userCount, struct User newUser, ch
         }
     }
     return false;
-}
-
-void clearUserFile() {
-    FILE *file = fopen("users.bin", "wb"); 
-    if (file == NULL) {
-        printf("Error opening file!\n");
-        return;
-    }
-    fclose(file);
-    printf("User data has been deleted!\n");
-
-    
-    userCount = 0;
 }
 
 

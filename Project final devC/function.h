@@ -31,14 +31,22 @@ void sortUsersByName();
 void end();
 
 void goBackOrExit();
+
 //ham kiem tra trung lap
 bool isDuplicateUser();
+
 // ham luu thong tin nguoi dung
 void saveUsersToFile();
+
 // ham doc file
 void loadUsersFromFile();
 
-void clearUserFile();
+//ham doc file thong tin admin 
+void loadAdminFrormFile(); 
 
-void loginAdmin(char *email,char *passWord);
+//ham dang nhap admin 
+void isAdmin(); 
+
+// ham dang nhap user 
+void loginUser();
 #endif        

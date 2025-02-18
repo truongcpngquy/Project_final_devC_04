@@ -38,4 +38,8 @@ struct User{
     float balance;
 };
 
+struct Admin{
+	char adminEmail[30];
+	char password[30]; 
+}; 
 #endif
